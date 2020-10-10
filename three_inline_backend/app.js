@@ -7,19 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var gamesRouter = require('./routes/games');
 
-const { Sequelize } = require('sequelize');
-
-const db = new Sequelize('three_inline', 'postgres', '1234', {
-  host: 'localhost',
-  dialect: 'postgres',
-  operatorsAliases: false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
+const db = require('./config/database')
 
 //Test DB
 db.authenticate()
