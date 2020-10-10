@@ -7,6 +7,25 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var gamesRouter = require('./routes/games');
 
+const { Sequelize } = require('sequelize');
+
+const db = new Sequelize('three_inline', 'postgres', '1234', {
+  host: 'localhost',
+  dialect: 'postgres',
+  operatorsAliases: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+});
+
+//Test DB
+db.authenticate()
+  .then(() => console.log('Base de Datos conectada'))
+  .catch(err => console.log('Error al conectarse con la base de datos: ' + err))
+
 var app = express();
 
 // view engine setup
@@ -23,12 +42,12 @@ app.use('/', indexRouter);
 app.use('/games', gamesRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

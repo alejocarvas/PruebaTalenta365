@@ -2,6 +2,8 @@
   "name": "three-inline-backend",
   "version": "0.0.0",
   "private": true,
+  "author": "Alejandro Carvajal",
+  "description": "",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -11,6 +13,9 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "pg": "^8.4.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
   }
 }
