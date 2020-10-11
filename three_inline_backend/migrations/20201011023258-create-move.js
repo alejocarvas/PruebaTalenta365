@@ -11,11 +11,8 @@ module.exports = {
       game_id: {
         type: Sequelize.INTEGER
       },
-      sell: {
-        type: Sequelize.INTEGER
-      },
-      user: {
-        type: Sequelize.STRING
+      obj: {
+        type: Sequelize.JSON
       }
     });
   },
