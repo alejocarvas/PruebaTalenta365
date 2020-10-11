@@ -27,16 +27,39 @@ router.get('/:id', function (req, res, next) {
       id: id
     }
   })
-    .then(games => {
-      console.log(games);
-      res.send(games);
+    .then(game => {
+      console.log(game);
+      //Check if found game
+      if (game.length > 0) {
+        //Get the game moves
+        Move.findAll({
+          where: {
+            game_id: game[0].id
+          }
+        })
+          .then(move => {
+            var moves = {}
+            if (move.length > 0) {
+              moves = move[0].obj
+            }
+            res.send({
+              id: game[0].id,
+              date_start: game[0].date_start,
+              status: game[0].status,
+              moves: moves
+            });
+          })
+          .catch(err => console.log(err));
+      } else {
+        res.sendStatus(404)
+      }
     })
     .catch(err => console.log(err));
 });
 
 /* POST new game. */
 router.post('/', function (req, res, next) {
-
+  //Change status all games open and not finished
   Game.update({
     status: 'Pausado'
   }, { where: { status: 'Iniciado' } })
@@ -53,17 +76,7 @@ router.post('/', function (req, res, next) {
         Move.create({
           id: '',
           game_id: game.id,
-          obj: {
-            1: '',
-            2: '',
-            3: '',
-            4: '',
-            5: '',
-            6: '',
-            7: '',
-            8: '',
-            9: '',
-          }
+          obj: { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', }
         }).then(move => {
           console.log(move)
           res.send(game)
@@ -77,9 +90,9 @@ router.post('/', function (req, res, next) {
 
 /* POST new move in a game by id. */
 router.post('/move', function (req, res, next) {
-
+  //Get the body request
   const postGameData = req.body;
-
+  //Get the game moves
   Move.findAll({
     where: {
       game_id: postGameData.game_id
@@ -87,8 +100,11 @@ router.post('/move', function (req, res, next) {
   })
     .then(move => {
       console.log(move);
+      //Check if have moves
       if (move.length > 0) {
+        //Update the user in the cell selected
         move[0].obj[postGameData.cell] = postGameData.user
+        //Update the move
         Move.update({
           obj: move[0].obj
         }, { where: { id: move[0].id } })
