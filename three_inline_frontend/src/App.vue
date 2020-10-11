@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/triqui.png">
-    <HelloWorld msg="Bienvenido al juego 3 en línea"/>
+    <img alt="Vue logo" src="./assets/triqui.png" />
+    <Game />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Game from './components/Game.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Game,
+  },
+};
 </script>
 
 <style>

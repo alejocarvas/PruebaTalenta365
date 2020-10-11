@@ -12,7 +12,7 @@
     </p>
     <h3>Quiero jugar ya!</h3>
     <ul>
-      <li><a href="" target="_blank" rel="noopener">Jugar</a></li>
+      <li><a href="/game" target="_blank" rel="noopener">Jugar</a></li>
       <li>
         <a
           href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: 'HelloWorld',
   props: {
     msg: String,
   },

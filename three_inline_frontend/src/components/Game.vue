@@ -1,31 +1,11 @@
 <template>
-    <div>
-        <input type="text" v-model="propName">
-    </div>
+  <div>
+    <h1>Bienvenido al juego</h1>
+  </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                key: value
-            }
-        },
-        props: {
-            propName: {
-                type: String,
-                default: '',
-                required: true
-            },
-        },
-        methods: {
-            name() {
-                
-            }
-        },
-    }
+export default {};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
