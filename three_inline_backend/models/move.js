@@ -2,21 +2,23 @@ const Sequelize = require('sequelize');
 const { model } = require('../config/database');
 const db = require('../config/database');
 
-const game = db.define('game', {
+const move = db.define('move', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement : true
     },
-    date_start: {
-        type: 'TIMESTAMP',
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    game_id: {
+        type: Sequelize.INTEGER
     },
-    status: {
+    sell: {
+        type: Sequelize.INTEGER
+    },
+    user: {
         type: Sequelize.STRING
     }
 }, {
     timestamps: false
 })
 
-module.exports = game;
+module.exports = move;
