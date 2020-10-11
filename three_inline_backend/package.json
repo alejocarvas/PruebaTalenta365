@@ -5,7 +5,8 @@
   "author": "Alejandro Carvajal",
   "description": "",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "lint:fix": "eslint --fix ./src"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -18,5 +19,11 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2"
   }
 }
