@@ -4,7 +4,8 @@ const db = require('../config/database');
 
 const game = db.define('game', {
     id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        primaryKey: true
     },
     date_start: {
         type: Sequelize.DATE
@@ -12,6 +13,8 @@ const game = db.define('game', {
     status: {
         type: Sequelize.STRING
     }
+}, {
+    timestamps: false
 })
 
 module.exports = game;
