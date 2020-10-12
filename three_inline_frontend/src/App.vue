@@ -3,27 +3,26 @@
     <Game @showModal="showModal" />
     <Modal ref="modalName">
       <template v-slot:header>
-        <h1>Modal title</h1>
+        <h1>Historial de juegos</h1>
       </template>
-
       <template v-slot:body>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua.
-        </p>
-        <p>
-          Arcu cursus vitae congue mauris rhoncus aenean. Tempor id eu nisl nunc mi. Pharetra diam
-          sit amet nisl suscipit adipiscing bibendum. Ut faucibus pulvinar elementum integer enim.
-          Odio facilisis mauris sit amet massa vitae tortor condimentum lacinia. Eu non diam
-          phasellus vestibulum lorem sed risus.
-        </p>
-      </template>
+        <p>A continuación encontrará el historial de juegos:</p>
+        <table style="width:100%">
+          <tr>
+            <th>Id</th>
+            <th>Fecha Inicio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+          <tbody>
+            <template v-for="(cell, index) in grid" :key="`cell-${index}`">
+              <tr></tr>
+              <tr class="detail-row"></tr>
+            </template>
+          </tbody>
+        </table>
 
-      <template v-slot:footer>
-        <div>
-          <button @click="$refs.modalName.closeModal()">Cancel</button>
-          <button @click="$refs.modalName.closeModal()">Save</button>
-        </div>
+        <grid :cols="cols" :rows="rows" :pagination="pagination"></grid>
       </template>
     </Modal>
   </div>
@@ -33,15 +32,21 @@
 import Game from './components/Game.vue';
 import Modal from './components/Modal.vue';
 import Axios from 'axios';
+import Grid from 'gridjs-vue';
 
 export default {
   name: 'App',
   data: function() {
-    return {};
+    return {
+      cols: ['Id', 'Fecha Inicio', 'Estado', 'Acciones'],
+      rows: [],
+      pagination: true,
+    };
   },
   components: {
     Game,
     Modal,
+    Grid,
   },
   methods: {
     async getGame(id) {
@@ -52,6 +57,11 @@ export default {
       console.log('llegó al evento del padre');
       let resul = await Axios.get(`http://localhost:3000/games/`);
       console.log(resul.data);
+      let games = resul.data.sort((a, b) => b.id - a.id);
+      for (var i = 0; i < games.length; i++) {
+        games[i].actions = '<div>Prueba</div>';
+        this.rows.push(Object.values(games[i]));
+      }
       this.$refs.modalName.openModal();
     },
   },

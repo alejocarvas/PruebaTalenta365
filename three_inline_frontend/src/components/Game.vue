@@ -19,8 +19,8 @@
               <button
                 class="button_play"
                 v-bind:class="{
-                  button_play_o: cell.image == 'x',
-                  button_play_x: cell.image == 'o',
+                  button_play_x: cell.image == 'x',
+                  button_play_o: cell.image == 'o',
                 }"
                 v-on:click="select(cell.id)"
                 :id="cell.id"
@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import Axios from 'axios';
+
 export default {
   data() {
     return {
@@ -73,6 +75,7 @@ export default {
       gamer: 'Quiero jugar ya!',
       user: 'x',
       initiated: false,
+      gameId: 0,
       grid: [
         { id: 1, class: 1, image: '' },
         { id: 2, class: 1, image: '' },
@@ -88,30 +91,100 @@ export default {
   },
   // definir métodos bajo el objeto `methods`
   methods: {
+    //Method that define a select cell
     select: function(id) {
       if (!this.initiated) {
         alert('Debes iniciar el juego primero.');
       } else {
-        if (this.user == 'x') {
-          this.user = 'o';
-          this.gamer = 'Truno Jugador 2 (O)';
-          this.grid[id - 1].image = 'o';
-        } else {
-          this.user = 'x';
-          this.gamer = 'Turno Jugador 1 (X)';
-          this.grid[id - 1].image = 'x';
-        }
+        //Set user in cell
+        this.grid[id - 1].image = this.user == 'x' ? 'x' : 'o';
+        //Consume the method to create a new game
+        Axios.post('http://localhost:3000/games/move', {
+          game_id: this.gameId,
+          cell: id,
+          user: this.user,
+        })
+          .then(response => {
+            //Check if response is OK
+            if (response.status == 200) {
+              //Set data values
+              var res = response.data;
+              console.log(res);
+              if (res.result == true) {
+                var msg = '';
+                //Check if the game has a winner
+                if (res.winner == 'Empate') {
+                  alert('El juego ha quedado en empate');
+                  msg = res.winner;
+                } else {
+                  alert('El ganador es el jugador ' + (res.winner == 'x' ? '1 (X)' : '2 (O)'));
+                  msg = 'Ganó jugador ' + res.winner;
+                }
+                Axios.post('http://localhost:3000/games/winner', {
+                  game_id: this.gameId,
+                  status: msg,
+                })
+                  .then(finish => {
+                    console.log(finish);
+                    //Game over
+                    this.initiated = false;
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              } else {
+                this.gamer = 'Truno Jugador ' + (this.user == 'x' ? '2 (O)' : '1 (X)');
+                this.user = this.user == 'x' ? 'o' : 'x';
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
         console.log(this.grid);
       }
     },
+    //Event that init game
     init: function() {
-      //
-      this.gamer = 'Turno Jugador 1 (X)';
-      this.initiated = true;
+      //Consume the method to create a new game
+      Axios.post('http://localhost:3000/games', {})
+        .then(response => {
+          //Check if response is OK
+          if (response.status == 200) {
+            //Set data values
+            this.user = 'x';
+            this.gamer = 'Turno Jugador 1 (X)';
+            this.initiated = true;
+            this.gameId = response.data.id;
+            this.grid.forEach(function(cell) {
+              cell.image = '';
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
+    //Event that pause game
     pause: function() {
-      //
-      this.initiated = false;
+      //Consume the method to pause the game
+      Axios.post(`http://localhost:3000/games/${this.gameId}/pause`, {})
+        .then(response => {
+          //Check if response is OK
+          if (response.status == 200) {
+            //Set data values
+            this.user = 'x';
+            this.gamer = 'Turno Jugador 1 (X)';
+            this.initiated = false;
+            this.gameId = 0;
+            this.grid.forEach(function(cell) {
+              cell.image = '';
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     showGames() {
       console.log('pasó por el evento del componente');
