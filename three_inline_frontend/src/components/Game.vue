@@ -40,7 +40,7 @@
                   >
                 </b-col>
                 <b-col>
-                  <b-button pill variant="info">Ver Historial</b-button>
+                  <b-button pill variant="info" v-on:click="showGames">Ver Historial</b-button>
                 </b-col>
               </b-row>
               <b-row class="margin_top_20">
@@ -112,6 +112,10 @@ export default {
     pause: function() {
       //
       this.initiated = false;
+    },
+    showGames() {
+      console.log('pasó por el evento del componente');
+      this.$emit('showModal');
     },
   },
 };

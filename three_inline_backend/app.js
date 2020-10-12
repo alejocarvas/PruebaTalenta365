@@ -6,20 +6,21 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var gamesRouter = require('./routes/games');
+var cors = require('cors');
 
-const db = require('./config/database')
+const db = require('./config/database');
 
 //Test DB
 db.authenticate()
   .then(() => console.log('Base de Datos conectada'))
-  .catch(err => console.log('Error al conectarse con la base de datos: ' + err))
+  .catch((err) => console.log('Error al conectarse con la base de datos: ' + err));
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
