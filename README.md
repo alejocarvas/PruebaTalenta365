@@ -32,7 +32,9 @@ Para poder ejecutar el proyecto, deberás instalar todas las dependencias necesa
 Lo primero que debes hacer es abrir una terminal para poder ejecutar el siguiente código.
 
 - Dirigite a la carpeta del proyecto backend, para esto deberás escribir el siguiente código en la terminal:
+
   `cd three_inline_backend`
+
 - Una vez en la carpeta del proyecto del backend deberás ejecutar la siguiente línea:
 
   `npm install`
@@ -40,10 +42,16 @@ Lo primero que debes hacer es abrir una terminal para poder ejecutar el siguient
   Esto permitirá instalar todas las dependencias que necesita el proyecto.
 
 - Ahora puedes ejecutar el proyecto del backend si no presentó ningún error la instalación de las dependencias:
+
   `npm start`
+
 - Crea otra terminal para el proyecto del frontend.
 - Ahora ingresar a la carpeta del proyecto del frontend de la siguiente forma:
+
   `cd three_inline_frontend`
+
 - Instalar las extensiones del proyecto del frontend:
+
   `npm install`
-- Ahora si no se presentaron errores podrás ejecutar el proyecto del frontend.
+
+Ahora si no se presentaron errores podrás ejecutar el proyecto del frontend.
