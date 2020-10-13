@@ -1,28 +1,32 @@
 <template>
   <div id="app">
-    <Game @showModal="showModal" />
-    <Modal ref="modalName">
+    <Game ref="gameDetail" @showModal="showModal" />
+    <Modal ref="modalGames">
       <template v-slot:header>
         <h1>Historial de juegos</h1>
       </template>
       <template v-slot:body>
         <p>A continuación encontrará el historial de juegos:</p>
-        <table style="width:100%">
-          <tr>
-            <th>Id</th>
-            <th>Fecha Inicio</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-          <tbody>
-            <template v-for="(cell, index) in grid" :key="`cell-${index}`">
-              <tr></tr>
-              <tr class="detail-row"></tr>
-            </template>
-          </tbody>
-        </table>
-
-        <grid :cols="cols" :rows="rows" :pagination="pagination"></grid>
+        <b-table
+          :items="rows"
+          :fields="fields"
+          :tbody-tr-class="rowClass"
+          :per-page="perPage"
+          :current-page="currentPage"
+        >
+          <!-- Optional default data cell scoped slot -->
+          <template v-slot:cell(actions)="row">
+            <b-button size="sm" @click="showGame(row.item.id)" pill variant="primary">
+              Ver
+            </b-button>
+          </template>
+        </b-table>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rowsCount"
+          :per-page="perPage"
+          aria-controls="my-table"
+        ></b-pagination>
       </template>
     </Modal>
   </div>
@@ -32,21 +36,30 @@
 import Game from './components/Game.vue';
 import Modal from './components/Modal.vue';
 import Axios from 'axios';
-import Grid from 'gridjs-vue';
 
 export default {
   name: 'App',
   data: function() {
     return {
-      cols: ['Id', 'Fecha Inicio', 'Estado', 'Acciones'],
+      fields: [
+        { key: 'id', label: 'Id' },
+        { key: 'date_start', label: 'Fecha de Inicio' },
+        { key: 'status', label: 'Estado' },
+        { key: 'actions', label: 'Acciones' },
+      ],
       rows: [],
-      pagination: true,
+      currentPage: 1,
+      perPage: 10,
     };
+  },
+  computed: {
+    rowsCount() {
+      return this.rows.length;
+    },
   },
   components: {
     Game,
     Modal,
-    Grid,
   },
   methods: {
     async getGame(id) {
@@ -57,12 +70,13 @@ export default {
       console.log('llegó al evento del padre');
       let resul = await Axios.get(`http://localhost:3000/games/`);
       console.log(resul.data);
-      let games = resul.data.sort((a, b) => b.id - a.id);
-      for (var i = 0; i < games.length; i++) {
-        games[i].actions = '<div>Prueba</div>';
-        this.rows.push(Object.values(games[i]));
-      }
-      this.$refs.modalName.openModal();
+
+      this.rows = resul.data.sort((a, b) => b.id - a.id);
+      this.$refs.modalGames.openModal();
+    },
+    showGame: function(id) {
+      this.$refs.modalGames.closeModal();
+      this.$refs.gameDetail.loadGame(id);
     },
   },
 };

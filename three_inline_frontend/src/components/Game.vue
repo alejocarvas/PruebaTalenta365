@@ -187,8 +187,37 @@ export default {
         });
     },
     showGames() {
-      console.log('pasó por el evento del componente');
+      //Main component method call
       this.$emit('showModal');
+    },
+    async loadGame(id) {
+      //Get game by id
+      let resul = await Axios.get(`http://localhost:3000/games/${id}`);
+      //Check if status is OK
+      if (resul.status == 200) {
+        //Get data
+        var game = resul.data;
+        //Convert moves in array values
+        var moves = Object.values(game.moves);
+        //Check if game is paused
+        if (game.status == 'Pausado') {
+          //Select user to play
+          this.user = moves.filter(x => x == '').length % 2 == 1 ? 'x' : 'o';
+          this.gamer = 'Turno Jugador ' + (this.user == 'x' ? '1 (X)' : '2 (O)');
+          this.initiated = true;
+        } else {
+          this.user = 'x';
+          this.gamer = game.status;
+          this.initiated = false;
+        }
+        this.gameId = id;
+        //Load game view
+        for (let i = 0; i < moves.length; i++) {
+          const move = moves[i];
+          this.grid[i].image = move;
+        }
+      }
+      console.log(resul);
     },
   },
 };
