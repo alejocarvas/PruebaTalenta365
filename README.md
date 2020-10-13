@@ -79,6 +79,44 @@ Allí deberás modificar la cadena de conexión donde deberás establecer el nom
       }
     });
 
+También deberás modificar el archivo
+
+> config.json
+
+Que se encuentra en la misma carpeta de configuración que el anterión, allí deberás modificar la configuración de la base de datos para crear las migrations como se muestra a continuación:
+
+    {
+      "development": {
+        "username": "postgres",
+        "password": "****",
+        "database": "three_inline",
+        "host": "localhost",
+        "dialect": "postgres"
+      },
+      "test": {
+        "username": "postgres",
+        "password": "****",
+        "database": "three_inline",
+        "host": "localhost",
+        "dialect": "postgres"
+      },
+      "production": {
+        "username": "postgres",
+        "password": "****",
+        "database": "three_inline",
+        "host": "localhost",
+        "dialect": "postgres"
+      }
+    }
+
+Allí deberás modificar las cadenas de conexión para los diferentes ambientes, en mi caso como no es un proyecto para producción, solo tengo un mismo ambiente para todo.
+
+Ahora debes ejecutar las migrations para crear las tablas en la base de datos con el siguiente comando:
+
+`sequelize db:migrate`
+
+Y por último verificar si todo fue correcto y se crearon las tablas en la base de datos.
+
 ### Versión
 
 Este proyecto se encuentra en su versión 1.0
