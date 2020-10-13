@@ -34,8 +34,11 @@ Lo primero que debes hacer es abrir una terminal para poder ejecutar el siguient
 - Dirigite a la carpeta del proyecto backend, para esto deberás escribir el siguiente código en la terminal:
   `cd three_inline_backend`
 - Una vez en la carpeta del proyecto del backend deberás ejecutar la siguiente línea:
+
   `npm install`
+
   Esto permitirá instalar todas las dependencias que necesita el proyecto.
+
 - Ahora puedes ejecutar el proyecto del backend si no presentó ningún error la instalación de las dependencias:
   `npm start`
 - Crea otra terminal para el proyecto del frontend.
