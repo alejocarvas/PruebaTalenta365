@@ -6,17 +6,17 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.DataTypes.INTEGER,
       },
       date_start: {
-        type: Sequelize.STRING
+        type: Sequelize.DataTypes.STRING,
       },
       status: {
-        type: Sequelize.STRING
-      }
+        type: Sequelize.DataTypes.STRING,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Games');
-  }
+  },
 };
